@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Roaster (Desi Edition) — Wireframe & Design Specification</title>
+  <meta name="description" content="Official wireframe and design system for Code Roaster (Desi Edition) - DevFest Nashik 2026">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F8F4EC;
+      --lavender: #EFF2FB;
+      --pale-yellow: #F7E3A8;
+      --ink: #141414;
+      --white: #FFFFFF;
+      --mustard: #EDB13E;
+      --google-blue: #4C80F0;
+      --google-red: #D9503F;
+      --google-green: #4FA35A;
+      --google-yellow: #EDB13E;
+      --muted-ink: #66625B;
+      --editor-bg: #171717;
+      --editor-ink: #F7F3EA;
+      --border-std: 2px solid var(--ink);
+      --border-heavy: 3px solid var(--ink);
+      --shadow-std: 4px 4px 0 var(--ink);
+      --shadow-pressed: 1px 1px 0 var(--ink);
+      --shadow-hover: 6px 6px 0 var(--ink);
+      --radius-card: 22px;
+      --radius-pill: 999px;
+      --radius-input: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(#141414 0.75px, transparent 0.75px),
+        radial-gradient(#141414 0.75px, var(--cream) 0.75px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+      background-attachment: fixed;
+      padding-bottom: 30px;
+    }
+
+    /* Screen Selector Bar (for Wireframe Inspection) */
+    .wireframe-nav {
+      background: var(--ink);
+      color: var(--white);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--mustard);
+    }
+    .wireframe-nav .title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .wireframe-nav .state-toggles {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .state-btn {
+      background: #2a2a2a;
+      color: #ddd;
+      border: 1px solid #444;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .state-btn:hover {
+      background: #3a3a3a;
+      color: var(--white);
+    }
+    .state-btn.active {
+      background: var(--mustard);
+      color: var(--ink);
+      border-color: var(--mustard);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 20px;
+      width: 100%;
+    }
+
+    /* Floating Pill Header */
+    .header-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .floating-pill {
+      background: var(--white);
+      border: var(--border-heavy);
+      box-shadow: var(--shadow-std);
+      border-radius: var(--radius-pill);
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 980px;
+      gap: 16px;
+    }
+    .header-logo {
+      height: 38px;
+      display: flex;
+      align-items: center;
+    }
+    .header-logo img, .header-logo svg {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-wordmark {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-v2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--mustard);
+      border: 1.5px solid var(--ink);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', 'Noto Sans Devanagari', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted-ink);
+      margin-bottom: 6px;
+      display: inline-block;
+      background: var(--pale-yellow);
+      padding: 4px 14px;
+      border: 1.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 8px;
+    }
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--muted-ink);
+      font-weight: 500;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .hero-subtitle strong {
+      color: var(--ink);
+    }
+
+    /* Main Tool Card */
+    .main-tool-card {
+      background: var(--white);
+      border: var(--border-heavy);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-std);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    /* Control Bar */
+    .control-bar {
+      background: var(--lavender);
+      border-bottom: var(--border-std);
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .control-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted-ink);
+    }
+
+    /* Segmented Control */
+    .segmented-control {
+      display: inline-flex;
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .segmented-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      color: var(--muted-ink);
+      transition: all 0.15s ease;
+    }
+    .segmented-btn.active {
+      background: var(--mustard);
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    /* Dropdowns & Selects */
+    .custom-select {
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: var(--radius-input);
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+      cursor: pointer;
+      outline: none;
+    }
+    .custom-select:focus {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    /* Error Toggle Button */
+    .error-toggle-btn {
+      background: var(--white);
+      border: 2px dashed var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .error-toggle-btn:hover {
+      background: var(--pale-yellow);
+    }
+
+    /* Primary CTA */
+    .primary-cta-btn {
+      background: var(--mustard);
+      color: var(--ink);
+      border: var(--border-heavy);
+      border-radius: var(--radius-pill);
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      box-shadow: var(--shadow-std);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .primary-cta-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .primary-cta-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: var(--shadow-pressed);
+    }
+
+    /* Expandable Error Area */
+    .error-drawer {
+      display: none;
+      background: #FFF5F4;
+      border-bottom: var(--border-std);
+      padding: 16px 24px;
+      border-left: 6px solid var(--google-red);
+    }
+    .error-drawer.open {
+      display: block;
+    }
+    .error-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--google-red);
+    }
+    .error-textarea {
+      width: 100%;
+      height: 70px;
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: 8px;
+      padding: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink);
+      resize: vertical;
+    }
+
+    /* Split Workspace Panes */
+    .split-pane {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      min-height: 580px;
+    }
+
+    /* Left Pane: Code Editor */
+    .editor-pane {
+      background: var(--editor-bg);
+      color: var(--editor-ink);
+      display: flex;
+      flex-direction: column;
+      border-right: var(--border-std);
+    }
+    .pane-header {
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid #2e2e2e;
+    }
+    .pane-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+    }
+    .pane-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--white);
+    }
+    .editor-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .editor-link-btn {
+      background: transparent;
+      border: none;
+      color: var(--mustard);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .editor-link-btn.clear {
+      color: #888;
+    }
+    .editor-link-btn:hover {
+      color: var(--white);
+    }
+
+    /* Editor Body */
+    .editor-body {
+      display: flex;
+      flex: 1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow: hidden;
+      position: relative;
+    }
+    .line-gutter {
+      width: 48px;
+      padding: 16px 0;
+      background: #141414;
+      color: #555;
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid #2a2a2a;
+      font-size: 12px;
+    }
+    .line-gutter span {
+      display: block;
+      padding-right: 12px;
+    }
+    .line-gutter span.highlight-line {
+      color: var(--google-red);
+      font-weight: 700;
+      background: rgba(217, 80, 63, 0.15);
+    }
+    .code-content-wrapper {
+      flex: 1;
+      padding: 16px;
+      overflow-x: auto;
+      background: var(--editor-bg);
+      color: var(--editor-ink);
+      outline: none;
+      white-space: pre;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .syn-kw { color: #f97583; font-weight: 600; }
+    .syn-fn { color: #b392f0; }
+    .syn-str { color: #9ecbff; }
+    .syn-cm { color: #6a737d; font-style: italic; }
+    .syn-err { background: rgba(217, 80, 63, 0.25); text-decoration: underline wavy var(--google-red); }
+
+    .editor-footer {
+      padding: 10px 20px;
+      background: #111;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #777;
+    }
+
+    /* Right Pane: Report / States */
+    .report-pane {
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      max-height: 720px;
+    }
+    .report-pane .pane-header {
+      background: var(--pale-yellow);
+      border-bottom: var(--border-std);
+    }
+    .report-pane .pane-label {
+      color: #665;
+    }
+    .report-pane .pane-title {
+      color: var(--ink);
+    }
+
+    /* STATE 1: EMPTY STATE */
+    .state-container {
+      display: none;
+      padding: 24px;
+      flex: 1;
+    }
+    .state-container.active-state {
+      display: block;
+    }
+
+    .empty-state-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 480px;
+      padding: 40px 20px;
+    }
+    .empty-avatar {
+      width: 80px;
+      height: 80px;
+      border: var(--border-heavy);
+      border-radius: 16px;
+      box-shadow: var(--shadow-std);
+      background: var(--pale-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .empty-avatar::after {
+      content: '◇';
+      position: absolute;
+      top: -24px;
+      font-size: 18px;
+      color: var(--ink);
+    }
+    .empty-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .empty-desc {
+      font-size: 15px;
+      color: var(--muted-ink);
+      max-width: 320px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .empty-btn {
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: var(--radius-pill);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: var(--shadow-std);
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.15s ease;
+    }
+    .empty-btn:hover {
+      background: var(--mustard);
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* STATE 2: ANALYZING STATE */
+    .analyzing-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 480px;
+      padding: 40px 20px;
+    }
+    .loader-diamond {
+      width: 70px;
+      height: 70px;
+      border: 3px solid var(--ink);
+      background: var(--mustard);
+      box-shadow: 4px 4px 0 var(--ink);
+      transform: rotate(45deg);
+      margin-bottom: 36px;
+      animation: pulseDiamond 2s infinite ease-in-out;
+      position: relative;
+    }
+    @keyframes pulseDiamond {
+      0%, 100% { transform: rotate(45deg) scale(1); }
+      50% { transform: rotate(45deg) scale(1.1); box-shadow: 6px 6px 0 var(--ink); }
+    }
+    .analyzing-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .rotating-quote {
+      font-family: 'JetBrains Mono', 'Noto Sans Devanagari', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--lavender);
+      border: var(--border-std);
+      border-radius: var(--radius-pill);
+      padding: 8px 20px;
+      box-shadow: 2px 2px 0 var(--ink);
+      max-width: 440px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* STATE 3: RESULT STATE */
+    .result-view {
+      padding: 20px;
+    }
+    .report-headline-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px dashed #ddd;
+    }
+    .headline-text-area {
+      flex: 1;
+    }
+    .report-lead-quote {
+      font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .report-lead-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted-ink);
+      font-weight: 600;
+    }
+
+    /* Rubber Stamp Score Badge */
+    .score-rubber-stamp {
+      background: var(--mustard);
+      border: 3px solid var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: center;
+      transform: rotate(-3deg);
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .score-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .score-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-top: 1.5px solid var(--ink);
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+    .score-desi-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--ink);
+      opacity: 0.9;
+    }
+
+    /* Section Subhead */
+    .section-label-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .section-heading-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Issue Cards */
+    .issue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .issue-card {
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: 14px;
+      box-shadow: 3px 3px 0 var(--ink);
+      padding: 14px;
+      position: relative;
+    }
+    .issue-card.severity-high {
+      border-top: 5px solid var(--google-red);
+    }
+    .issue-card.severity-medium {
+      border-top: 5px solid var(--mustard);
+    }
+    .issue-card.severity-low {
+      border-top: 5px solid var(--google-green);
+    }
+    .issue-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .issue-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--lavender);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 2px 8px;
+    }
+    .pill-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted-ink);
+    }
+    .pill-severity {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: var(--radius-pill);
+      padding: 2px 8px;
+      border: 1.5px solid var(--ink);
+      text-transform: uppercase;
+    }
+    .pill-severity.high { background: #FFD4CE; color: #9B1C0E; }
+    .pill-severity.medium { background: #FFE6A8; color: #8A5800; }
+    .pill-severity.low { background: #D2F4D3; color: #166E22; }
+
+    .issue-roast-text {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .issue-fix-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--cream);
+      border-left: 3px solid var(--ink);
+      padding: 6px 10px;
+      color: var(--ink);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* Error Explainer Card */
+    .explainer-box {
+      background: var(--lavender);
+      border: var(--border-std);
+      border-left: 5px solid var(--google-blue);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 2px 2px 0 var(--ink);
+      margin-bottom: 24px;
+    }
+    .explainer-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--google-blue);
+      margin-bottom: 6px;
+    }
+    .explainer-body {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Redemption Arc */
+    .redemption-arc {
+      background: #1E1E1E;
+      color: var(--white);
+      border: var(--border-heavy);
+      border-radius: 16px;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .redemption-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #333;
+    }
+    .redemption-title-group h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--mustard);
+      letter-spacing: 0.05em;
+    }
+    .redemption-title-group span {
+      font-family: 'JetBrains Mono', 'Noto Sans Devanagari', monospace;
+      font-size: 11px;
+      color: #aaa;
+    }
+    .copy-btn {
+      background: var(--white);
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--ink);
+      transition: all 0.15s ease;
+    }
+    .copy-btn:hover {
+      background: var(--mustard);
+    }
+    .redemption-code-block {
+      background: #111;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #9ECBFF;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Closing Actions */
+    .action-buttons-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .action-pill-btn {
+      background: var(--white);
+      border: var(--border-std);
+      border-radius: var(--radius-pill);
+      padding: 10px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--ink);
+      transition: all 0.15s ease;
+    }
+    .action-pill-btn.primary {
+      background: var(--mustard);
+    }
+    .action-pill-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .closing-slogan {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--muted-ink);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* STATE 4: ERROR / RATE LIMIT */
+    .rate-limit-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 480px;
+      padding: 40px 20px;
+    }
+    .error-stamp {
+      background: #FFEAEA;
+      border: 3px solid var(--google-red);
+      color: var(--google-red);
+      box-shadow: 4px 4px 0 var(--ink);
+      border-radius: 12px;
+      padding: 10px 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transform: rotate(-2deg);
+      margin-bottom: 20px;
+    }
+    .rate-limit-title {
+      font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .rate-limit-desc {
+      font-size: 15px;
+      color: var(--muted-ink);
+      max-width: 380px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Rangoli / Warli Decorative Strip */
+    .rangoli-strip {
+      width: 100%;
+      height: 28px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0.85;
+      user-select: none;
+    }
+    .rangoli-pattern {
+      font-family: monospace;
+      font-size: 16px;
+      letter-spacing: 8px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    /* Footer */
+    .app-footer {
+      text-align: center;
+      padding: 20px;
+      border-top: var(--border-std);
+      background: var(--white);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-std);
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .footer-left img, .footer-left svg {
+      height: 24px;
+      width: auto;
+    }
+    .footer-right {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted-ink);
+    }
+    .footer-right strong {
+      color: var(--ink);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .split-pane {
+        grid-template-columns: 1fr;
+      }
+      .editor-pane {
+        border-right: none;
+        border-bottom: var(--border-std);
+      }
+      .hero-title {
+        font-size: 38px;
+      }
+      .floating-pill {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 14px;
+      }
+      .control-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .primary-cta-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .wireframe-nav {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .app-footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Wireframe Controller Bar -->
+  <div class="wireframe-nav">
+    <div class="title">
+      <span>⚡ GDG NASHIK — CODE ROASTER WIREFRAME SPEC</span>
+      <span style="background:var(--mustard); color:var(--ink); padding:2px 6px; border-radius:4px; font-weight:800;">DEVFEST '26</span>
+    </div>
+    <div class="state-toggles">
+      <span>PREVIEW STITCH SCREEN:</span>
+      <button class="state-btn" onclick="showState('empty')">01 // Empty</button>
+      <button class="state-btn" onclick="showState('analyzing')">02 // Analyzing</button>
+      <button class="state-btn active" onclick="showState('result')">03 // Result</button>
+      <button class="state-btn" onclick="showState('ratelimit')">04 // Rate Limit</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Section 7: Floating Pill Header -->
+    <div class="header-wrapper">
+      <header class="floating-pill">
+        <!-- GDG Nashik Logo from assests folder -->
+        <div class="header-logo" title="Google Developer Groups Nashik">
+          <img src="assests/GDG-Nashik_Logo.svg" alt="GDG Nashik Logo" onerror="this.onerror=null; this.src='assests/GDG_Logo.svg';">
+        </div>
+
+        <!-- Center Wordmark -->
+        <div class="header-center">
+          <span class="brand-wordmark">Code Roaster</span>
+          <span class="badge-v2">v2</span>
+        </div>
+
+        <!-- DevFest Nashik 2026 Logo from assests folder -->
+        <div class="header-logo" title="DevFest Nashik 2026">
+          <img src="assests/DevFest-26'_Logo.svg" alt="DevFest Nashik 2026 Logo" onerror="this.onerror=null; this.src='assests/Pre-DevFest_Logo.svg';">
+        </div>
+      </header>
+    </div>
+
+    <!-- Section 8: Hero -->
+    <section class="hero">
+      <div class="hero-eyebrow">CODE BOL RAHA HAI · मला वाचवा!</div>
+      <h1 class="hero-title">Code Roaster</h1>
+      <p class="hero-subtitle">
+        Paste your code. Pick your roast. <strong>Get humbled. Get the fix.</strong><br>
+        <span style="font-size:13px; font-family:'JetBrains Mono', monospace; color:var(--muted-ink);">Desi debugging, powered by Gemini.</span>
+      </p>
+    </section>
+
+    <!-- Section 9: Main Tool Card -->
+    <main class="main-tool-card">
+
+      <!-- Section 10: Control Bar -->
+      <div class="control-bar">
+        <!-- Roast Level Segmented Selector -->
+        <div class="control-group">
+          <span class="control-label">ROAST LEVEL:</span>
+          <div class="segmented-control" id="roastLevelSelector">
+            <button class="segmented-btn" onclick="setRoastLevel(this, 'halka')">Halka</button>
+            <button class="segmented-btn active" onclick="setRoastLevel(this, 'tikha')">Tikha 🌶️</button>
+            <button class="segmented-btn" onclick="setRoastLevel(this, 'zanzanit')">Zanzanit 🔥</button>
+          </div>
+        </div>
+
+        <!-- Persona Dropdown -->
+        <div class="control-group">
+          <span class="control-label">PERSONA:</span>
+          <select class="custom-select" id="personaSelect">
+            <option value="standup" selected>Stand-up Roaster</option>
+            <option value="sharmaji">Sharma ji ka Beta</option>
+            <option value="professor">Strict Professor</option>
+            <option value="bhau">Hostel Bhau</option>
+            <option value="recruiter">Campus Recruiter</option>
+          </select>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="control-group">
+          <span class="control-label">LANGUAGE:</span>
+          <select class="custom-select" id="langSelect">
+            <option value="python" selected>Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+          </select>
+        </div>
+
+        <!-- Error Toggle -->
+        <button class="error-toggle-btn" id="errorToggleBtn" onclick="toggleErrorDrawer()">
+          <span id="errorIcon">+</span> ERROR MESSAGE
+        </button>
+
+        <!-- Primary CTA -->
+        <button class="primary-cta-btn" id="roastMeBtn" onclick="triggerSimulatedRoast()">
+          Roast Me / भाजून काढ 🔥 →
+        </button>
+      </div>
+
+      <!-- Expandable Error Message Drawer -->
+      <div class="error-drawer" id="errorDrawer">
+        <div class="error-drawer-header">
+          <span>ATTACH TERMINAL TRACEBACK / COMPILER ERROR (OPTIONAL)</span>
+          <span style="cursor:pointer;" onclick="toggleErrorDrawer()">✕ DISMISS</span>
+        </div>
+        <textarea class="error-textarea" placeholder="Paste your TypeError, IndexError, or console traceback here...">TypeError: unsupported operand type(s) for +=: 'int' and 'list'</textarea>
+      </div>
+
+      <!-- Split Screen Area -->
+      <div class="split-pane">
+
+        <!-- Section 11: Code Editor (Left) -->
+        <div class="editor-pane">
+          <div class="pane-header">
+            <div>
+              <div class="pane-label">INPUT // SRC</div>
+              <div class="pane-title">YOUR CODE</div>
+            </div>
+            <div class="editor-actions">
+              <button class="editor-link-btn" onclick="loadSampleBug()">SAMPLE BUG</button>
+              <button class="editor-link-btn clear" onclick="clearEditor()">CLEAR</button>
+            </div>
+          </div>
+
+          <div class="editor-body">
+            <div class="line-gutter">
+              <span>01</span>
+              <span>02</span>
+              <span>03</span>
+              <span class="highlight-line">04</span>
+              <span>05</span>
+              <span>06</span>
+              <span>07</span>
+              <span>08</span>
+              <span>09</span>
+              <span>10</span>
+              <span>11</span>
+              <span>12</span>
+            </div>
+            <div class="code-content-wrapper" contenteditable="true" spellcheck="false" id="codeEditorContent">
+<span class="syn-kw">def</span> <span class="syn-fn">calculate_average</span>(numbers):
+    <span class="syn-cm"># Calculate average of numbers in list</span>
+    total = <span class="syn-kw">0</span>
+    <span class="syn-kw">for</span> n <span class="syn-kw">in</span> numbers:
+        <span class="syn-err">total += numbers</span>  <span class="syn-cm"># Oops! Adding list instead of item</span>
+    
+    <span class="syn-kw">return</span> total / len(numbers)
+
+<span class="syn-cm"># Example call</span>
+scores = [<span class="syn-kw">85</span>, <span class="syn-kw">90</span>, <span class="syn-kw">78</span>, <span class="syn-kw">92</span>]
+print(calculate_average(scores))</div>
+          </div>
+
+          <div class="editor-footer">
+            <span>Python · Auto-detected</span>
+            <span id="charCounter">234 / 12,000 chars</span>
+          </div>
+        </div>
+
+        <!-- Right Pane: Report / Interactive States -->
+        <div class="report-pane">
+          <div class="pane-header">
+            <div>
+              <div class="pane-label">AUDIT // REPORT</div>
+              <div class="pane-title" id="reportHeaderTitle">ROAST REPORT</div>
+            </div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700;">
+              STATUS: <span id="statusTag" style="color:var(--google-green);">READY</span>
+            </div>
+          </div>
+
+          <!-- SCREEN 01: EMPTY STATE -->
+          <div class="state-container" id="state-empty">
+            <div class="empty-state-view">
+              <div class="empty-avatar">?_?</div>
+              <h3 class="empty-heading">Your code is suspiciously quiet.</h3>
+              <p class="empty-desc">
+                Paste some code on the left and let's find out what kind of chaos is lurking inside.
+              </p>
+              <button class="empty-btn" onclick="loadSampleBug(); triggerSimulatedRoast();">
+                TRY SAMPLE BUG →
+              </button>
+            </div>
+          </div>
+
+          <!-- SCREEN 02: ANALYZING STATE -->
+          <div class="state-container" id="state-analyzing">
+            <div class="analyzing-view">
+              <div class="loader-diamond"></div>
+              <h3 class="analyzing-title">Analyzing your masterpiece...</h3>
+              <div class="rotating-quote" id="rotatingQuote">
+                "Sharma ji ke bete se comparison chal raha hai…"
+              </div>
+              <p style="font-size:12px; color:var(--muted-ink); margin-top:20px; font-family:'JetBrains Mono', monospace;">
+                Model: Gemini 3.5 Flash · Nasik Spice Index: Max
+              </p>
+            </div>
+          </div>
+
+          <!-- SCREEN 03: RESULT STATE (DEFAULT SHOWCASE) -->
+          <div class="state-container active-state" id="state-result">
+            <div class="result-view">
+
+              <!-- Savage Lead Headline + Rubber Stamp Badge -->
+              <div class="report-headline-card">
+                <div class="headline-text-area">
+                  <h2 class="report-lead-quote">
+                    "Yeh code nahi, Panchavati Express ki general boghi hai — sab kuch ek hi jagah ghused diya!"
+                  </h2>
+                  <div class="report-lead-meta">
+                    AUDITED BY: STAND-UP ROASTER · INTENSITY: TIKHA (SPICY)
+                  </div>
+                </div>
+
+                <!-- Rubber Stamp Roast Score Badge -->
+                <div class="score-rubber-stamp">
+                  <div class="score-number">72</div>
+                  <div class="score-label">ROAST SCORE</div>
+                  <div class="score-desi-tag">ATTENDANCE SHORT<br>CODE BHI SHORT</div>
+                </div>
+              </div>
+
+              <!-- Issue Cards -->
+              <div class="section-label-bar">
+                <span class="section-heading-mono">DETECTED ISSUES // 02 FOUND</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--google-red); font-weight:700;">1 FATAL BUG</span>
+              </div>
+
+              <div class="issue-list">
+                <!-- Issue 1: Fatal Bug -->
+                <div class="issue-card severity-high">
+                  <div class="issue-header">
+                    <div class="issue-meta">
+                      <span class="pill-line">L05</span>
+                      <span class="pill-category">LOGIC ERROR</span>
+                    </div>
+                    <span class="pill-severity high">FATAL BUG</span>
+                  </div>
+                  <div class="issue-roast-text">
+                    "Bhau, loop ke andar har iteration mein poori list hi add kar rahe ho 🤦 Python bhi soch raha hoga ki aakhir main karu toh karu kya!"
+                  </div>
+                  <div class="issue-fix-text">
+                    Fix: Replace <code>total += numbers</code> with <code>total += n</code>.
+                  </div>
+                </div>
+
+                <!-- Issue 2: Optimization -->
+                <div class="issue-card severity-medium">
+                  <div class="issue-header">
+                    <div class="issue-meta">
+                      <span class="pill-line">L03–07</span>
+                      <span class="pill-category">CLEAN CODE</span>
+                    </div>
+                    <span class="pill-severity medium">OPTIMIZATION</span>
+                  </div>
+                  <div class="issue-roast-text">
+                    "2026 chal raha hai bhau! Python mein built-in <code>sum()</code> exist karta hai, manual accumulator loop likh ke 1995 ki yaad dila di 😂"
+                  </div>
+                  <div class="issue-fix-text">
+                    Fix: Simply use <code>return sum(numbers) / len(numbers)</code>.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error Explainer (Rendered when error was supplied) -->
+              <div class="explainer-box">
+                <div class="explainer-title">ERROR // WHAT HAPPENED</div>
+                <div class="explainer-body">
+                  <strong>Yeh TypeError ka matlab:</strong> You tried to add a <code>list</code> to an <code>int</code> using <code>+=</code>. Python treats integers and lists as two completely different species and refuses to marry them.
+                </div>
+              </div>
+
+              <!-- Redemption Arc -->
+              <div class="redemption-arc">
+                <div class="redemption-header">
+                  <div class="redemption-title-group">
+                    <h4>REDEMPTION ARC</h4>
+                    <span>Ab asli fix dekh, bhau (Clean & Idiomatic Python)</span>
+                  </div>
+                  <button class="copy-btn" id="copyCodeBtn" onclick="copyFixedCode()">COPY FIX →</button>
+                </div>
+                <div class="redemption-code-block" id="fixedCodeBlock">def calculate_average(numbers: list[float]) -> float:
+    """Calculate the arithmetic mean safely."""
+    if not numbers:
+        return 0.0
+    return sum(numbers) / len(numbers)</div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="action-buttons-row">
+                <button class="action-pill-btn primary" onclick="alert('Roast summary copied to clipboard for sharing!')">SHARE ROAST 🚀</button>
+                <button class="action-pill-btn" onclick="setRoastLevel(document.querySelectorAll('.segmented-btn')[2], 'zanzanit'); triggerSimulatedRoast();">ROAST AGAIN, SPICIER 🔥</button>
+                <button class="action-pill-btn" onclick="clearEditor(); showState('empty');">NEW CODE</button>
+              </div>
+
+              <div class="closing-slogan">
+                "Chinta mat kar. Code bhi gym jaisa hai — repeat karoge toh better hoga."
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SCREEN 04: ERROR / RATE LIMIT STATE -->
+          <div class="state-container" id="state-ratelimit">
+            <div class="rate-limit-view">
+              <div class="error-stamp">ROAST // TOO FAST</div>
+              <h3 class="rate-limit-title">Bhai, itni bhi jaldi kya hai?</h3>
+              <p class="rate-limit-desc">
+                Thoda ruk, roast ko bhi marinate hone do. Gemini API is taking a quick cutting chai break.
+              </p>
+              <button class="action-pill-btn primary" onclick="showState('result')">
+                TRY AGAIN →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Section 21: Rangoli / Warli Border Strip -->
+    <div class="rangoli-strip">
+      <div class="rangoli-pattern">▲ ▼ ▲ ▼ • ▲ ▼ ▲ ▼ • ▲ ▼ ▲ ▼ • ▲ ▼ ▲ ▼ • ▲ ▼ ▲ ▼</div>
+    </div>
+
+    <!-- Section 26: Brand Rules Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <img src="assests/GDG-Nashik_Logo.svg" alt="GDG Nashik" style="height:24px;">
+        <span>Built with 💛 by <strong>Google Developer Groups Nashik</strong></span>
+      </div>
+      <div class="footer-right">
+        DevFest Nashik 2026 · Specially crafted for <strong>GDG on Campus MET</strong>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // State management for wireframe preview
+    const states = {
+      empty: document.getElementById('state-empty'),
+      analyzing: document.getElementById('state-analyzing'),
+      result: document.getElementById('state-result'),
+      ratelimit: document.getElementById('state-ratelimit')
+    };
+
+    const statusMap = {
+      empty: { text: 'IDLE', color: '#888' },
+      analyzing: { text: 'ROASTING...', color: 'var(--mustard)' },
+      result: { text: 'AUDIT COMPLETE', color: 'var(--google-green)' },
+      ratelimit: { text: 'RATE LIMITED', color: 'var(--google-red)' }
+    };
+
+    function showState(stateKey) {
+      Object.keys(states).forEach(key => {
+        states[key].classList.remove('active-state');
+      });
+      if (states[stateKey]) {
+        states[stateKey].classList.add('active-state');
+      }
+
+      // Update switcher buttons
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.state-btn')).find(b => b.textContent.toLowerCase().includes(stateKey));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Update status tag in header
+      const tag = document.getElementById('statusTag');
+      if (tag && statusMap[stateKey]) {
+        tag.textContent = statusMap[stateKey].text;
+        tag.style.color = statusMap[stateKey].color;
+      }
+    }
+
+    // Roast Level selector
+    function setRoastLevel(btn, level) {
+      document.querySelectorAll('.segmented-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Toggle error message drawer
+    function toggleErrorDrawer() {
+      const drawer = document.getElementById('errorDrawer');
+      const icon = document.getElementById('errorIcon');
+      drawer.classList.toggle('open');
+      if (drawer.classList.contains('open')) {
+        icon.textContent = '−';
+      } else {
+        icon.textContent = '+';
+      }
+    }
+
+    // Sample Bug Loader
+    function loadSampleBug() {
+      const sample = `def calculate_average(numbers):
+    # Calculate average of numbers in list
+    total = 0
+    for n in numbers:
+        total += numbers  # Oops! Adding list instead of item
+    
+    return total / len(numbers)
+
+# Example call
+scores = [85, 90, 78, 92]
+print(calculate_average(scores))`;
+      document.getElementById('codeEditorContent').textContent = sample;
+    }
+
+    function clearEditor() {
+      document.getElementById('codeEditorContent').textContent = '';
+    }
+
+    // Rotating messages in analyzing state
+    const quotes = [
+      "Compiler ki chai thandi ho rahi hai…",
+      "Sharma ji ke bete se comparison chal raha hai…",
+      "Bhau, roast tayyar ho raha hai…",
+      "Panchavati Express se bhi late hai tumhara code…",
+      "Memory leak dhoond rahe hain, telescope se…"
+    ];
+    let quoteIndex = 0;
+    setInterval(() => {
+      quoteIndex = (quoteIndex + 1) % quotes.length;
+      const el = document.getElementById('rotatingQuote');
+      if (el) el.textContent = `"${quotes[quoteIndex]}"`;
+    }, 2400);
+
+    // Simulated roast trigger
+    function triggerSimulatedRoast() {
+      const code = document.getElementById('codeEditorContent').textContent.trim();
+      if (!code) {
+        alert("Pehle code toh daalo! (Please write or load code first)");
+        return;
+      }
+      showState('analyzing');
+      setTimeout(() => {
+        showState('result');
+      }, 1600);
+    }
+
+    // Copy fixed code
+    function copyFixedCode() {
+      const code = document.getElementById('fixedCodeBlock').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyCodeBtn');
+        btn.textContent = 'COPIED ✓';
+        btn.style.background = 'var(--mustard)';
+        setTimeout(() => {
+          btn.textContent = 'COPY FIX →';
+          btn.style.background = 'var(--white)';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
